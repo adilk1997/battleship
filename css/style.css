@@ -1,0 +1,49 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 24px;
+}
+
+h1 {
+  margin-bottom: 8px;
+}
+
+#message {
+  margin-bottom: 20px;
+}
+
+
+.boards { 
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 20px;
+}
+
+.board { /* la griglia 8x8 */
+  display: grid;
+  grid-template-columns: repeat(8, 40px);
+  gap: 4px;
+}
+
+.cell { /* la cella */
+  width: 40px;
+  height: 40px;
+  background: lightgray;
+  border: 1px solid #333;
+  cursor: pointer;
+}
+
+.cell.ship {
+  background-image: url("../assets/nosfondo3.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#reset {
+  padding: 10px 16px;
+  cursor: pointer;
+}
+

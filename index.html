@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Battleship</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+  <script defer src="./js/app.js"></script>
+</head>
+
+<body>
+  <h1>Battleship</h1>
+
+  <p id="message">Player 1's turn</p>
+
+  <div class="boards">
+    <div>
+      <h2>Player 1</h2>
+      <div id="player1-board" class="board"></div>
+    </div>
+
+    <div>
+      <h2>Player 2</h2>
+      <div id="player2-board" class="board"></div>
+    </div>
+  </div>
+
+<div class="ships-panel">
+  <p>Select a ship:</p>
+
+  <img src="./assets/nosfondo1.png" alt="Ship size 1" data-size="1" class="ship-option">
+  <img src="./assets/nosfondo3.png" alt="Ship size 3" data-size="3" class="ship-option">
+  <img src="./assets/nosfondo5.png" alt="Ship size 5" data-size="5" class="ship-option">
+</div>
+
+  <button id="reset">Reset Game</button>
+</body>
+</html>
