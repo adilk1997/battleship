@@ -74,17 +74,33 @@ player1BoardEl.addEventListener('click', (evt) => {
   const index = Number(evt.target.dataset.index);
   if (positionBoatPlayer1.includes(index)) return;
 
-  evt.target.classList.add('ship');
+  evt.target.classList.add ('ship');
   positionBoatPlayer1.push(index);
 
-  messageEl.textContent = `Player 1 placing ships: ${positionBoatPlayer1.length}`;
+  messageEl.textContent = `Player 1 placing ships; ${positionBoatPlayer1.length}`;
 
-  // quando Player 1 ha piazzato 3 celle, passa a Player 2
   if (positionBoatPlayer1.length === 3) {
     currentPlayer = 'player2';
-    messageEl.textContent = "Player 2's turn";
+    messageEl.textContent = "Player 2 turn";
   }
 });
+
+player2BoardEl.addEventListener('click', (evt) => {
+  if (currentPlayer !== 'player2') return; //se non è il turno di player 2 ignora il click
+  if (!evt.target.classList.contains('cell')) return; //se non ho cliccato una cella ignora
+  
+  const index = Number(evt.target.dataset.index);
+  if (positionBoatPlayer2.includes(index)) return;
+
+  evt.target.classList.add('ship');
+  positionBoatPlayer2.push(index);
+  
+  messageEl.textContent = `Player 2 placing ships: ${positionBoatPlayer2.length}`;
+  
+  if (positionBoatPlayer2.length === 3) {
+    messageEl.textContent = "Setup complete! Next: shooting phase";
+  } 
+})
 
 resetBtnEl.addEventListener('click', init); //reset ovviamente
 
