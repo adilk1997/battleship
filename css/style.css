@@ -47,3 +47,18 @@ h1 {
   cursor: pointer;
 }
 
+.cell.hit {
+  background-color: red;
+}
+
+.cell.miss {
+  background-color: white;
+}
+
+.board.hide-ships .cell.ship {
+  background-image: none;
+}
+
+.board.hide-ships .cell.ship.hit {
+  background-image: url("../assets/nosfondo3.png");
+}

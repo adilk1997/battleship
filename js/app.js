@@ -36,6 +36,7 @@ const boardSize = 8;
 let currentPlayer;
 let positionBoatPlayer1;
 let positionBoatPlayer2;
+let phase;
 
 /*------------------------ Cached Element References ------------------------*/
 const player1BoardEl = document.querySelector('#player1-board');
@@ -59,7 +60,11 @@ const init = () => {
   buildGrid(player1BoardEl);
   buildGrid(player2BoardEl);
 
+  player1BoardEl.classList.remove('hide-ships');
+  player2BoardEl.classList.remove('hide-ships');
+
   currentPlayer = 'player1';
+  phase = 'setup';
   positionBoatPlayer1 = [];
   positionBoatPlayer2 = [];
 
@@ -68,6 +73,7 @@ const init = () => {
 
 /*----------------------------- Event Listeners -----------------------------*/
 player1BoardEl.addEventListener('click', (evt) => {
+  if (phase !== 'setup') return;
   if (currentPlayer !== 'player1') return;
   if (!evt.target.classList.contains('cell')) return;
 
@@ -86,6 +92,7 @@ player1BoardEl.addEventListener('click', (evt) => {
 });
 
 player2BoardEl.addEventListener('click', (evt) => {
+  if (phase !== 'setup') return;
   if (currentPlayer !== 'player2') return; //se non è il turno di player 2 ignora il click
   if (!evt.target.classList.contains('cell')) return; //se non ho cliccato una cella ignora
   
@@ -98,9 +105,69 @@ player2BoardEl.addEventListener('click', (evt) => {
   messageEl.textContent = `Player 2 placing ships: ${positionBoatPlayer2.length}`;
   
   if (positionBoatPlayer2.length === 3) {
-    messageEl.textContent = "Setup complete! Next: shooting phase";
+    phase = 'battle';
+    currentPlayer = 'player1';
+    player2BoardEl.classList.add('hide-ships');
+    messageEl.textContent = "Battle phase; Player 1 shoot";
+
+    evt.stopImmediatePropagation(); // stopImmediatePropagation w3school https://www.w3schools.com/jsref/event_stopimmediatepropagation.asp
   } 
 })
+
+// BATTLE PHASE: Player 1 shoots on Player 2 board
+player2BoardEl.addEventListener('click', (evt) => {
+  if (phase !== 'battle') return;
+  if (currentPlayer !== 'player1') return;
+  if (!evt.target.classList.contains('cell')) return;
+
+  const index = Number(evt.target.dataset.index);
+
+  if (
+    evt.target.classList.contains('hit') ||
+    evt.target.classList.contains('miss')
+  ) return;
+
+  if (positionBoatPlayer2.includes(index)) {
+    evt.target.classList.add('hit');
+    messageEl.textContent = "HIT! Player 2's turn";
+  } else {
+    evt.target.classList.add('miss');
+    messageEl.textContent = "MISS! Player 2's turn";
+  }
+
+  currentPlayer = 'player2';
+
+  player1BoardEl.classList.add('hide-ships');    // nasconde le navi di Player 1 (per Player 2)
+  player2BoardEl.classList.remove('hide-ships'); // mostra di nuovo la board di Player 2 (così Player 2 vede dove ha sparato)
+});
+
+
+// BATTLE PHASE: Player 2 shoots on Player 1 board
+player1BoardEl.addEventListener('click', (evt) => {
+  if (phase !== 'battle') return;
+  if (currentPlayer !== 'player2') return;
+  if (!evt.target.classList.contains('cell')) return;
+
+  const index = Number(evt.target.dataset.index);
+
+  // evita doppio click sulla stessa cella
+  if (evt.target.classList.contains('hit') || evt.target.classList.contains('miss')) return;
+
+  if (positionBoatPlayer1.includes(index)) {
+    evt.target.classList.add('hit');
+    messageEl.textContent = "HIT! Player 1's turn";
+  } else {
+    evt.target.classList.add('miss');
+    messageEl.textContent = "MISS! Player 1's turn";
+  }
+
+  currentPlayer = 'player1';
+
+  // torna il turno a Player 1: nascondi P2 e mostra P1
+  player2BoardEl.classList.add('hide-ships');
+  player1BoardEl.classList.remove('hide-ships');
+});
+
 
 resetBtnEl.addEventListener('click', init); //reset ovviamente
 
