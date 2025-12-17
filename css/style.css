@@ -15,7 +15,7 @@ h1 {
 
 
 .boards { 
-  display: flex;
+  display: flex;  /*le due board stanno affiancate con flex  */
   justify-content: center;
   gap: 40px;
   margin-bottom: 20px;
@@ -35,16 +35,22 @@ h1 {
   cursor: pointer;
 }
 
-.cell.ship {
+.cell.ship-1 {
+  background-image: url("../assets/nosfondo1.png");
+}
+
+.cell.ship-3 {
   background-image: url("../assets/nosfondo3.png");
+}
+
+.cell.ship-5 {
+  background-image: url("../assets/nosfondo5.png");
+}
+
+.cell.ship-1,.cell.ship-3, .cell.ship-5 { /* se una cella ha la classe .ship mostra l immagine come sfondo*/
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-#reset {
-  padding: 10px 16px;
-  cursor: pointer;
 }
 
 .cell.hit {
@@ -55,10 +61,32 @@ h1 {
   background-color: white;
 }
 
-.board.hide-ships .cell.ship {
-  background-image: none;
+.board.hide-ships .cell.ship-1 {
+  background-image: none;  /* se una board ha hide-ships allora le ship non mostrano immagine */
 }
 
-.board.hide-ships .cell.ship.hit {
-  background-image: url("../assets/nosfondo3.png");
+.board.hide-ships .cell.ship-3 {
+  background-image: none; 
+}
+
+.board.hide-ships .cell.ship-5 {
+  background-image: none;  
+}
+
+.board.hide-ships .cell.ship-1.hit {
+  background-image: url("../assets/nosfondo1.png"); /* pero se una nave è colpita allora l immagine torna visibile anche se la board è hide*/
+}
+
+.board.hide-ships .cell.ship-3.hit {
+  background-image: url("../assets/nosfondo3.png"); /* pero se una nave è colpita allora l immagine torna visibile anche se la board è hide*/
+}
+
+.board.hide-ships .cell.ship-5.hit {
+  background-image: url("../assets/nosfondo5.png"); /* pero se una nave è colpita allora l immagine torna visibile anche se la board è hide*/
+}
+
+#reset {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
 }

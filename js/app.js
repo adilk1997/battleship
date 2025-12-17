@@ -36,6 +36,8 @@ const boardSize = 8;
 let currentPlayer;
 let positionBoatPlayer1;
 let positionBoatPlayer2;
+let shipsToPlacePlayer1;
+let shipsToPlacePlayer2;
 let phase;
 
 /*------------------------ Cached Element References ------------------------*/
@@ -67,8 +69,10 @@ const init = () => {
   phase = 'setup';
   positionBoatPlayer1 = [];
   positionBoatPlayer2 = [];
+  shipsToPlacePlayer1 = 9;
+  shipsToPlacePlayer2 = 9;
 
-  messageEl.textContent = "Player 1's turn";
+  messageEl.textContent = "Player 1: place 9 ship cells";
 };
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -80,14 +84,21 @@ player1BoardEl.addEventListener('click', (evt) => {
   const index = Number(evt.target.dataset.index);
   if (positionBoatPlayer1.includes(index)) return;
 
-  evt.target.classList.add ('ship');
+  if (shipsToPlacePlayer1 === 9) {
+    evt.target.classList.add('ship-1');
+  } else if (shipsToPlacePlayer1 <= 8 && shipsToPlacePlayer1 >= 6) {
+    evt.target.classList.add('ship-3');
+  } else {
+    evt.target.classList.add('ship-5');
+  }
   positionBoatPlayer1.push(index);
 
-  messageEl.textContent = `Player 1 placing ships; ${positionBoatPlayer1.length}`;
+  shipsToPlacePlayer1--;
+  messageEl.textContent = `Player 1 placing ships: ${shipsToPlacePlayer1} remaining`;
 
-  if (positionBoatPlayer1.length === 3) {
+  if (shipsToPlacePlayer1 === 0) {
     currentPlayer = 'player2';
-    messageEl.textContent = "Player 2 turn";
+    messageEl.textContent = "Player 2: place 9 ship cells (1 + 3 + 5)";
   }
 });
 
@@ -95,24 +106,33 @@ player2BoardEl.addEventListener('click', (evt) => {
   if (phase !== 'setup') return;
   if (currentPlayer !== 'player2') return; //se non è il turno di player 2 ignora il click
   if (!evt.target.classList.contains('cell')) return; //se non ho cliccato una cella ignora
-  
+
   const index = Number(evt.target.dataset.index);
   if (positionBoatPlayer2.includes(index)) return;
 
-  evt.target.classList.add('ship');
+  if (shipsToPlacePlayer2 === 9) {
+    evt.target.classList.add('ship-1');
+  } else if (shipsToPlacePlayer2 <= 8 && shipsToPlacePlayer2 >= 6) {
+    evt.target.classList.add('ship-3');
+  } else {
+    evt.target.classList.add('ship-5');
+  }
+
   positionBoatPlayer2.push(index);
-  
-  messageEl.textContent = `Player 2 placing ships: ${positionBoatPlayer2.length}`;
-  
-  if (positionBoatPlayer2.length === 3) {
+
+  shipsToPlacePlayer2--;
+  messageEl.textContent = `Player 2 placing ships: ${shipsToPlacePlayer2} remaining`;
+
+  if (shipsToPlacePlayer2 === 0) {
     phase = 'battle';
     currentPlayer = 'player1';
     player2BoardEl.classList.add('hide-ships');
-    messageEl.textContent = "Battle phase; Player 1 shoot";
-
+    messageEl.textContent = "Battle phase: Player 1 shoot";
+//evita che parte anche il listener di battle sullo stesso click
     evt.stopImmediatePropagation(); // stopImmediatePropagation w3school https://www.w3schools.com/jsref/event_stopimmediatepropagation.asp
-  } 
-})
+
+  }
+});
 
 // BATTLE PHASE: Player 1 shoots on Player 2 board
 player2BoardEl.addEventListener('click', (evt) => {
