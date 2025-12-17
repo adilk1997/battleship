@@ -1,31 +1,32 @@
-// /* inizializzazione del gioco:
-// -devo creare due board di 8x8
-// -devo far piazzare le navi a entrambi i giocatori, se non sono piazzate tutte le navi il gioco non parte
-// -impostare il giocatore che comincia il gioco (sempre il player1)
-// -mettere lo stato del gioco come -in corso
-// -mostrare sullo schermo "turno player1"
+// /* Game initialization:
+// - create two 8x8 boards
+// - allow both players to place their ships; the game cannot start until all ships are placed
+// - set the starting player (always Player 1)
+// - set the game state to "in progress"
+// - display "Player 1's turn" on the screen
 
-// stato del gioco:
-// -dovrò avere due liste che segnano le posizioni delle navi dove sono state messe
-// -indicare se il gioco è in corso o finito, nel caso che è finito indicare chi ha vinto
+// Game state:
+// - maintain two arrays storing the positions of the ships for each player
+// - track whether the game is in progress or finished
+// - if the game is finished, determine and display the winner
 
-// gestione del click del gioco:
-// -capire quale cella è stata cliccata
-// -se in quella cella c era una nave allora aggiungere hit nel caso contrario aggiungere un miss
-// -nel caso che è colpita marcare la cella come "hit"
-// -non permettere di cliccare due volte su una stessa cella gia scelta in precedenza
-// -quindi magari mettere la cosa se hai cliccato su una cella, quest ultima si colora di rosso per segnare che è stata gia cliccata
-// -al termine del click dopo aver saputo se hit o miss passare al turno dell altro player
+// Click handling during the game:
+// - determine which cell was clicked
+// - if the cell contains a ship, register a hit; otherwise register a miss
+// - if a ship is hit, mark the cell as "hit"
+// - prevent clicking the same cell more than once
+// - visually mark clicked cells (hit or miss)
+// - after processing hit or miss, switch to the other player's turn
 
-// Fine del gioco:
-// -quando non ci sono piu navi sulle celle mettere lo stato del gioco in finito
-// -decretare il vincitore
-// -non far continuare il gioco
+// End of the game:
+// - when a player has no remaining ship cells, end the game
+// - declare the winner
+// - prevent any further moves
 
-// reset:
-// -clicchi sul tasto reset e ricomincia il gioco
-// -con la griglia vuota e la possibilita di mettere le navi da capo.
-// -impostare di nuovo il primo turno
+// Reset:
+// - clicking the reset button restarts the game
+// - clear the boards and allow ships to be placed again
+// - reset the turn to Player 1
 // */
 
 
@@ -73,6 +74,16 @@ const init = () => {
   shipsToPlacePlayer2 = 9;
 
   messageEl.textContent = "Player 1: place 9 ship cells";
+};
+
+const checkWinner = () => {
+  if (positionBoatPlayer1.length === 0) {
+    messageEl.textContent = "PLAYER 2 WINS! 🎉";
+    phase = 'gameover';
+  } else if (positionBoatPlayer2.length === 0) {
+    messageEl.textContent = "PLAYER 1 WINS! 🎉";
+    phase = 'gameover';
+  }
 };
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -128,7 +139,7 @@ player2BoardEl.addEventListener('click', (evt) => {
     currentPlayer = 'player1';
     player2BoardEl.classList.add('hide-ships');
     messageEl.textContent = "Battle phase: Player 1 shoot";
-//evita che parte anche il listener di battle sullo stesso click
+    //evita che parte anche il listener di battle sullo stesso click
     evt.stopImmediatePropagation(); // stopImmediatePropagation w3school https://www.w3schools.com/jsref/event_stopimmediatepropagation.asp
 
   }
@@ -149,11 +160,15 @@ player2BoardEl.addEventListener('click', (evt) => {
 
   if (positionBoatPlayer2.includes(index)) {
     evt.target.classList.add('hit');
+    positionBoatPlayer2 = positionBoatPlayer2.filter(i => i !== index);
     messageEl.textContent = "HIT! Player 2's turn";
   } else {
     evt.target.classList.add('miss');
     messageEl.textContent = "MISS! Player 2's turn";
   }
+
+  checkWinner();
+  if (phase === 'gameover') return;
 
   currentPlayer = 'player2';
 
@@ -175,11 +190,15 @@ player1BoardEl.addEventListener('click', (evt) => {
 
   if (positionBoatPlayer1.includes(index)) {
     evt.target.classList.add('hit');
+    positionBoatPlayer1 = positionBoatPlayer1.filter(i => i !== index); //riassegna a positionBoatPlayer1 praticametne solo i numeri diversi da index
     messageEl.textContent = "HIT! Player 1's turn";
   } else {
     evt.target.classList.add('miss');
     messageEl.textContent = "MISS! Player 1's turn";
   }
+
+  checkWinner();
+  if (phase === 'gameover') return;
 
   currentPlayer = 'player1';
 
