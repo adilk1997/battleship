@@ -12,6 +12,11 @@
 6. -When a player has no remaining ship cells, the game ends and a winner is declared.
 7. -The Reset button restarts the game.
 
+#-------------Screenshot---------------
+
+['Battleship Game Screenshot'](assets/screenshot.png) <================= Click Here! (command + click)
+
+
 #-------------Features-----------------
 1. -Two-player turn-based gameplay.
 2. -Setup phase and battle phase.
