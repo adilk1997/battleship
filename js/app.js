@@ -46,6 +46,9 @@ const player1BoardEl = document.querySelector('#player1-board');
 const player2BoardEl = document.querySelector('#player2-board');
 const resetBtnEl = document.querySelector('#reset');
 const messageEl = document.querySelector('#message');
+const explosionSound = document.querySelector('#explosion-sound');
+const splashSound = document.querySelector('#splash-sound');
+
 
 /*-------------------------------- Functions --------------------------------*/
 const buildGrid = (boardEl) => {
@@ -84,6 +87,16 @@ const checkWinner = () => {
     messageEl.textContent = "PLAYER 1 WINS! 🎉";
     phase = 'gameover';
   }
+};
+
+const playExplosion = () => {
+  explosionSound.currentTime = 0; //ogni volta facciamo ripartire il suono
+  explosionSound.play().catch(() => {});
+};
+
+const playSplash = () => {
+  splashSound.currentTime = 0;
+  splashSound.play().catch(() => {});
 };
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -161,9 +174,11 @@ player2BoardEl.addEventListener('click', (evt) => {
   if (positionBoatPlayer2.includes(index)) {
     evt.target.classList.add('hit');
     positionBoatPlayer2 = positionBoatPlayer2.filter(i => i !== index);
+    playExplosion();
     messageEl.textContent = "HIT! Player 2's turn";
   } else {
     evt.target.classList.add('miss');
+    playSplash();
     messageEl.textContent = "MISS! Player 2's turn";
   }
 
@@ -191,9 +206,11 @@ player1BoardEl.addEventListener('click', (evt) => {
   if (positionBoatPlayer1.includes(index)) {
     evt.target.classList.add('hit');
     positionBoatPlayer1 = positionBoatPlayer1.filter(i => i !== index); //riassegna a positionBoatPlayer1 praticametne solo i numeri diversi da index
+    playExplosion();
     messageEl.textContent = "HIT! Player 1's turn";
   } else {
     evt.target.classList.add('miss');
+    playSplash();
     messageEl.textContent = "MISS! Player 1's turn";
   }
 

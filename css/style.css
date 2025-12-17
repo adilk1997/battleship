@@ -30,10 +30,11 @@ h1 {
 .cell { /* la cella */
   width: 40px;
   height: 40px;
-  background: lightgray;
+  background-color: #1e90ff; /* #1e90ff; (colore mare) */
   border: 1px solid #333;
   cursor: pointer;
 }
+
 
 .cell.ship-1 {
   background-image: url("../assets/nosfondo1.png");
