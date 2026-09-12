@@ -14,7 +14,7 @@
 
 ## Screenshot
 
-['Battleship Game Screenshot'](assets/screenshot.png) <================= Click Here! (command + click)
+![Battleship Game Screenshot](assets/screenshot.png)
 
 
 ## Features 
