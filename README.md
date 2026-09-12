@@ -14,7 +14,7 @@
 
 ## Screenshot
 
-![Battleship Game Screenshot](assets/screenshot.png)
+![Battleship Game Screenshot](assets/Screenshot.png)
 
 
 ## Features 
